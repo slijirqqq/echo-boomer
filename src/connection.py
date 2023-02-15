@@ -7,6 +7,15 @@ logger = logging.getLogger(__name__)
 _CHUNK_BYTES: int = 1024
 
 
+def run_iteration(selector: selectors.BaseSelector):
+    events = selector.select()
+    for key, _ in events:
+        print(key, _)
+        callback = key.data
+        print(callback)
+        callback(selector, key.fileobj)
+
+
 class ClientConnection:
 
     @classmethod

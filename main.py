@@ -4,6 +4,8 @@ import socket
 import sys
 from enum import Enum
 
+from src.connection import ClientConnection, run_iteration
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(
@@ -41,8 +43,11 @@ def main(host: str | None = None, port: int | None = None):
             selector.register(
                 server_socket,
                 selectors.EVENT_READ,
-                # accept_new_connection,
+                ClientConnection.accept,
             )
+
+            while True:
+                run_iteration(selector)
 
 
 if __name__ == "__main__":
